@@ -1,9 +1,23 @@
 $def with (data, number_of_pages, current_page, paging_numbers)
-<ul id='nav'>
+<div id='nav_container'>
+<ul class='nav'>
 $for i in paging_numbers:
-  <li><a href='/$i'>$i</a></li>
+  $if i != '...':
+    <li><a href='/$i'>$i</a></li>
+  $else:
+    <li>$i</li>
 </ul>
-
+</div>
 <div id='content'>
 $data
+</div>
+
+<div id='nav_container'>
+<ul class='nav'>
+$for i in paging_numbers:
+  $if i != '...':
+    <li><a href='/$i'>$i</a></li>
+  $else:
+    <li>$i</li>
+</ul>
 </div>

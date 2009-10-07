@@ -6,9 +6,20 @@ $def with (content)
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>Readmo</title>
+    <link rel="stylesheet" href="/static/yui-reset.css" type="text/css" media="screen" charset="utf-8"/>
     <link rel="stylesheet" href="/static/readmo.css" type="text/css" media="screen" charset="utf-8"/>
 </head>
 <body>
-$:content
+<div id='container'>
+  <div id='header'>
+    <h1>Readmo!</h1>
+  </div>
+
+  $:content
+
+  <div id='footer'>
+    <p><a href='http://www.github.com/puresock/readmo'>Readmo</a> is made by <a href='http://www.veryhappythings.co.uk'>Mac</a></p>
+  </div>
+</div>
 </body>
 </html>

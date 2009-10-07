@@ -15,10 +15,21 @@ def base():
         yield '', join_('<head>\n')
         yield '', join_('    <meta http-equiv="content-type" content="text/html; charset=utf-8" />\n')
         yield '', join_('    <title>Readmo</title>\n')
+        yield '', join_('    <link rel="stylesheet" href="/static/yui-reset.css" type="text/css" media="screen" charset="utf-8"/>\n')
         yield '', join_('    <link rel="stylesheet" href="/static/readmo.css" type="text/css" media="screen" charset="utf-8"/>\n')
         yield '', join_('</head>\n')
         yield '', join_('<body>\n')
-        yield '', join_(escape_(content, False), '\n')
+        yield '', join_("<div id='container'>\n")
+        yield '', join_("  <div id='header'>\n")
+        yield '', join_('    <h1>Readmo!</h1>\n')
+        yield '', join_('  </div>\n')
+        yield '', join_('\n')
+        yield '', join_('  ', escape_(content, False), '\n')
+        yield '', join_('\n')
+        yield '', join_("  <div id='footer'>\n")
+        yield '', join_("    <p><a href='http://www.github.com/puresock/readmo'>Readmo</a> is made by <a href='http://www.veryhappythings.co.uk'>Mac</a></p>\n")
+        yield '', join_('  </div>\n')
+        yield '', join_('</div>\n')
         yield '', join_('</body>\n')
         yield '', join_('</html>\n')
     return __template__
@@ -48,13 +59,27 @@ def page():
     escape_ = _dummy._escape
 
     def __template__ (data, number_of_pages, current_page, paging_numbers):
-        yield '', join_("<ul id='nav'>\n")
+        yield '', join_("<div id='nav_container'>\n")
+        yield '', join_("<ul class='nav'>\n")
         for i in loop.setup(paging_numbers):
-            yield '', join_("<li><a href='/", escape_(i, True), "'>", escape_(i, True), '</a></li>\n')
+            if i != '...':
+                yield '', join_("<li><a href='/", escape_(i, True), "'>", escape_(i, True), '</a></li>\n')
+            else:
+                yield '', join_('<li>', escape_(i, True), '</li>\n')
         yield '', join_('</ul>\n')
-        yield '', join_('\n')
+        yield '', join_('</div>\n')
         yield '', join_("<div id='content'>\n")
         yield '', join_(escape_(data, True), '\n')
+        yield '', join_('</div>\n')
+        yield '', join_('\n')
+        yield '', join_("<div id='nav_container'>\n")
+        yield '', join_("<ul class='nav'>\n")
+        for i in loop.setup(paging_numbers):
+            if i != '...':
+                yield '', join_("<li><a href='/", escape_(i, True), "'>", escape_(i, True), '</a></li>\n')
+            else:
+                yield '', join_('<li>', escape_(i, True), '</li>\n')
+        yield '', join_('</ul>\n')
         yield '', join_('</div>\n')
     return __template__
 

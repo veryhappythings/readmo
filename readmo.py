@@ -33,8 +33,14 @@ def links_for_page_number(page_number, distance=2):
     if page_number + distance >= len(pages): high_distance = len(pages) - page_number
     links += range(page_number - low_distance, page_number+1)
     links += range(page_number + 1, page_number + 1 + high_distance)
-    if links[0] != 1: links.insert(0, 1)
-    if links[-1] != len(pages): links.append(len(pages))
+    if links[0] != 1:
+        links.insert(0, 1)
+        if links[1] != 2:
+            links.insert(1, '...')
+    if links[-1] != len(pages):
+        if links[-1] != len(pages)-1:
+            links.append('...')
+        links.append(len(pages))
     return links
 
 def notfound():
