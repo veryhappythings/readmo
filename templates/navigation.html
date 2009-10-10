@@ -1,0 +1,14 @@
+$def with (previous_page, next_page, paging_numbers)
+<div id='nav_container'>
+<ul class='nav'>
+$if previous_page:
+  <li><a href='/$previous_page'>Previous</a></li>
+$for i in paging_numbers:
+  $if i != '...':
+    <li><a href='/$i'>$i</a></li>
+  $else:
+    <li>$i</li>
+$if next_page:
+  <li><a href='/$next_page'>Next</a></li>
+</ul>
+</div>

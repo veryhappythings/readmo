@@ -13,10 +13,13 @@ for filename in sorted(glob.glob('pages/*.markdown')):
 class page(object):
     def GET(self, page_number=1):
         page_number=int(page_number)
+        next_page = page_number+1 if page_number < len(pages) else None
+        previous_page = page_number-1 if page_number > 1 else None
+        navigation = render_plain.navigation(next_page=next_page,
+                                             previous_page=previous_page,
+                                             paging_numbers=links_for_page_number(page_number))
         return render.page(data=markdown.markdown(page_from_number(page_number)),
-                           current_page=page_number,
-                           paging_numbers=links_for_page_number(page_number),
-                           number_of_pages=len(pages))
+                           navigation=navigation)
 
 def page_from_number(page_number):
     if page_number < 1:
@@ -51,6 +54,7 @@ urls = (
   '^/(\d+)$', 'page',
 )
 
+render_plain = web.template.render('templates')
 render = web.template.render('templates', base='base')
 app = web.application(urls, globals())
 app.notfound = notfound

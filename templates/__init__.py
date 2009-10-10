@@ -37,6 +37,31 @@ def base():
 base = CompiledTemplate(base(), 'templates/base.html')
 
 
+def navigation():
+    loop = ForLoop()
+    _dummy  = CompiledTemplate(lambda: None, "dummy")
+    join_ = _dummy._join
+    escape_ = _dummy._escape
+
+    def __template__ (previous_page, next_page, paging_numbers):
+        yield '', join_("<div id='nav_container'>\n")
+        yield '', join_("<ul class='nav'>\n")
+        if previous_page:
+            yield '', join_("<li><a href='/", escape_(previous_page, True), "'>Previous</a></li>\n")
+        for i in loop.setup(paging_numbers):
+            if i != '...':
+                yield '', join_("<li><a href='/", escape_(i, True), "'>", escape_(i, True), '</a></li>\n')
+            else:
+                yield '', join_('<li>', escape_(i, True), '</li>\n')
+        if next_page:
+            yield '', join_("<li><a href='/", escape_(next_page, True), "'>Next</a></li>\n")
+        yield '', join_('</ul>\n')
+        yield '', join_('</div>\n')
+    return __template__
+
+navigation = CompiledTemplate(navigation(), 'templates/navigation.html')
+
+
 def notfound():
     loop = ForLoop()
     _dummy  = CompiledTemplate(lambda: None, "dummy")
@@ -58,29 +83,15 @@ def page():
     join_ = _dummy._join
     escape_ = _dummy._escape
 
-    def __template__ (data, number_of_pages, current_page, paging_numbers):
-        yield '', join_("<div id='nav_container'>\n")
-        yield '', join_("<ul class='nav'>\n")
-        for i in loop.setup(paging_numbers):
-            if i != '...':
-                yield '', join_("<li><a href='/", escape_(i, True), "'>", escape_(i, True), '</a></li>\n')
-            else:
-                yield '', join_('<li>', escape_(i, True), '</li>\n')
-        yield '', join_('</ul>\n')
-        yield '', join_('</div>\n')
+    def __template__ (data, navigation):
+        yield '', join_('\n')
+        yield '', join_(escape_(navigation, True), '\n')
+        yield '', join_('\n')
         yield '', join_("<div id='content'>\n")
         yield '', join_(escape_(data, True), '\n')
         yield '', join_('</div>\n')
         yield '', join_('\n')
-        yield '', join_("<div id='nav_container'>\n")
-        yield '', join_("<ul class='nav'>\n")
-        for i in loop.setup(paging_numbers):
-            if i != '...':
-                yield '', join_("<li><a href='/", escape_(i, True), "'>", escape_(i, True), '</a></li>\n')
-            else:
-                yield '', join_('<li>', escape_(i, True), '</li>\n')
-        yield '', join_('</ul>\n')
-        yield '', join_('</div>\n')
+        yield '', join_(escape_(navigation, True), '\n')
     return __template__
 
 page = CompiledTemplate(page(), 'templates/page.html')
